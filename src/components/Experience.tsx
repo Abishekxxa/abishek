@@ -6,7 +6,7 @@ const Experience = () => {
     {
       title: "Founder & CEO",
       company: "Reverie Synaptic Pulse (RSP)",
-      period: "2023 - Present",
+      period: "2024 - Present",
       description: "Leading a fintech startup specializing in algorithmic trading and portfolio management with proven track record of delivering exceptional returns.",
       achievements: [
         "Built proprietary SMC/ICT-based trading algorithms with 89% win rate",
