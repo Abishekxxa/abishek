@@ -110,21 +110,6 @@ const Projects = () => {
                 </ul>
               </div>
               
-              <div className="mb-6">
-                <h4 className="font-semibold text-foreground mb-3">Technologies:</h4>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech, techIndex) => (
-                    <Badge 
-                      key={techIndex} 
-                      variant="outline"
-                      className="border-primary/30 text-primary hover:bg-primary/10"
-                    >
-                      {tech}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-              
               <div className="flex justify-between items-center pt-4 border-t border-border">
                 <div className="flex space-x-4 text-sm">
                   {Object.entries(project.metrics).map(([key, value]) => (
