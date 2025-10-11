@@ -1,116 +1,160 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { User, Session } from "@supabase/supabase-js";
 import { z } from "zod";
 
 const authSchema = z.object({
-  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
-  password: z.string().trim().min(6, "Password must be at least 6 characters").max(100, "Password must be less than 100 characters")
+  email: z.string().trim().email("Invalid email address").max(255),
+  password: z.string().min(6, "Password must be at least 6 characters").max(100)
 });
 
-type AuthFormData = z.infer<typeof authSchema>;
+interface AuthProps {
+  onAuthSuccess: (user: User) => void;
+}
 
-const Auth = () => {
+const Auth = ({ onAuthSuccess }: AuthProps) => {
   const [isLogin, setIsLogin] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  const form = useForm<AuthFormData>({
-    resolver: zodResolver(authSchema),
-    defaultValues: {
-      email: "",
-      password: ""
-    }
-  });
+  useEffect(() => {
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        onAuthSuccess(session.user);
+      }
+    });
 
-  const handleAuth = async (data: AuthFormData) => {
-    setIsLoading(true);
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (session?.user) {
+          onAuthSuccess(session.user);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [onAuthSuccess]);
+
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
     try {
+      const validation = authSchema.safeParse({ email, password });
+      if (!validation.success) {
+        toast({
+          title: "Validation Error",
+          description: validation.error.errors[0].message,
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({
-          email: data.email,
-          password: data.password
+          email,
+          password,
         });
+
         if (error) throw error;
+
         toast({
           title: "Welcome back!",
-          description: "You have successfully logged in."
+          description: "Successfully logged in.",
         });
       } else {
         const { error } = await supabase.auth.signUp({
-          email: data.email,
-          password: data.password
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/`,
+          },
         });
+
         if (error) throw error;
+
         toast({
           title: "Account created!",
-          description: "You have successfully signed up."
+          description: "You're now signed in.",
         });
       }
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: "Authentication Error",
         description: error.message,
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <Card className="p-8 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-center text-primary">
-        {isLogin ? "Login" : "Sign Up"}
-      </h2>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleAuth)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input type="email" placeholder="your@email.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Loading..." : isLogin ? "Login" : "Sign Up"}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-subtle px-6">
+      <Card className="w-full max-w-md p-8 shadow-elegant">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-2">
+            Trading Journal
+          </h2>
+          <p className="text-muted-foreground">
+            {isLogin ? "Sign in to your account" : "Create a new account"}
+          </p>
+        </div>
+
+        <form onSubmit={handleAuth} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium mb-2">Email</label>
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your.email@example.com"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Password</label>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+            />
+          </div>
+
+          <Button
+            type="submit"
+            variant="hero"
+            className="w-full"
+            disabled={loading}
+          >
+            {loading ? "Processing..." : isLogin ? "Sign In" : "Sign Up"}
           </Button>
         </form>
-      </Form>
-      <div className="mt-4 text-center">
-        <button
-          onClick={() => setIsLogin(!isLogin)}
-          className="text-primary hover:underline"
-        >
-          {isLogin ? "Need an account? Sign up" : "Already have an account? Login"}
-        </button>
-      </div>
-    </Card>
+
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => setIsLogin(!isLogin)}
+            className="text-primary hover:text-accent transition-colors text-sm"
+          >
+            {isLogin
+              ? "Don't have an account? Sign up"
+              : "Already have an account? Sign in"}
+          </button>
+        </div>
+      </Card>
+    </div>
   );
 };
 
