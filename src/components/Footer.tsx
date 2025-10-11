@@ -4,9 +4,15 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">
-              Abishek S J
-            </h3>
+            <a 
+              href="https://www.linkedin.com/in/abishek-s-j-241078254/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent hover:opacity-80 transition-opacity">
+                Abishek S J
+              </h3>
+            </a>
             <p className="text-primary-foreground/80 leading-relaxed">
               Fintech entrepreneur and algorithmic trading expert, building the future of 
               wealth management through innovative technology and proven strategies.

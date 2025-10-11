@@ -23,7 +23,14 @@ const Hero = () => {
       <div className="relative z-10 container mx-auto px-6 text-center text-white">
         <div className="animate-fade-in-up">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            <span className="block">Abishek S J</span>
+            <a 
+              href="https://www.linkedin.com/in/abishek-s-j-241078254/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block hover:text-accent transition-colors"
+            >
+              Abishek S J
+            </a>
             <span className="block text-accent text-3xl md:text-4xl mt-2">
               Fintech Entrepreneur & Algorithmic Trading Expert
             </span>
