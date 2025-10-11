@@ -19,7 +19,7 @@ const Experience = () => {
     {
       title: "Algorithmic Trading Specialist",
       company: "Independent Consultant",
-      period: "2022 - Present",
+      period: "2023 - Present",
       description: "Developing advanced trading systems and providing mentorship in forex markets with focus on institutional-grade strategies.",
       achievements: [
         "Created automated finance trackers for multi-client portfolio analysis",
@@ -32,7 +32,7 @@ const Experience = () => {
     {
       title: "Software Developer",
       company: "Fintech Projects",
-      period: "2021 - Present",
+      period: "2024 - Present",
       description: "Building innovative financial applications using modern web technologies and VibeCoding methodologies for enhanced user engagement.",
       achievements: [
         "Developed interactive React/Next.js PWAs with gamified XP systems",
