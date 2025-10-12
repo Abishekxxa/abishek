@@ -84,10 +84,11 @@ const Journal = () => {
 
         {/* Admin Section at Bottom */}
         <div className="border-t pt-12">
+          <h2 className="text-2xl font-bold mb-8 text-center text-primary">Admin Section</h2>
           {!user ? (
             <Auth onAuthSuccess={(user) => setUser(user)} />
           ) : (
-            <TradingJournal user={user} onLogout={() => setUser(null)} onUploadSuccess={fetchJournals} />
+            <TradingJournal user={user} onLogout={() => setUser(null)} />
           )}
         </div>
       </div>

@@ -7,21 +7,12 @@ import { Textarea } from "./ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { User } from "@supabase/supabase-js";
 
-interface Journal {
-  id: string;
-  journal_date: string;
-  image_url: string;
-  notes: string | null;
-  created_at: string;
-}
-
 interface TradingJournalProps {
   user: User;
   onLogout: () => void;
-  onUploadSuccess: () => void;
 }
 
-const TradingJournal = ({ user, onLogout, onUploadSuccess }: TradingJournalProps) => {
+const TradingJournal = ({ user, onLogout }: TradingJournalProps) => {
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [notes, setNotes] = useState("");
@@ -32,19 +23,20 @@ const TradingJournal = ({ user, onLogout, onUploadSuccess }: TradingJournalProps
   const { toast } = useToast();
 
   useEffect(() => {
-    checkAdminRole();
-  }, [user]);
+    checkAdminStatus();
+  }, []);
 
-  const checkAdminRole = async () => {
+  const checkAdminStatus = async () => {
     const { data } = await supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", user.id)
       .eq("role", "admin")
-      .single();
+      .maybeSingle();
 
     setIsAdmin(!!data);
   };
+
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -122,9 +114,6 @@ const TradingJournal = ({ user, onLogout, onUploadSuccess }: TradingJournalProps
       setSelectedFile(null);
       setNotes("");
       setJournalDate(new Date().toISOString().split("T")[0]);
-      
-      // Refresh journals
-      onUploadSuccess();
     } catch (error: any) {
       toast({
         title: "Upload Failed",
@@ -143,27 +132,22 @@ const TradingJournal = ({ user, onLogout, onUploadSuccess }: TradingJournalProps
 
   if (!isAdmin) {
     return (
-      <Card className="p-8 shadow-elegant">
-        <div className="text-center">
-          <p className="text-muted-foreground mb-4">
-            You are logged in as: {user.email}
-          </p>
-          <p className="text-destructive mb-6">
-            You do not have admin privileges to upload journals.
-          </p>
-          <Button variant="outline" onClick={handleLogout}>
-            Logout
-          </Button>
-        </div>
-      </Card>
+      <div className="text-center py-8">
+        <p className="text-muted-foreground mb-4">
+          You don't have admin access to upload journals.
+        </p>
+        <Button variant="outline" onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>
     );
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold text-primary">Admin Panel</h2>
-        <Button variant="outline" onClick={handleLogout}>
+    <div className="max-w-2xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <p className="text-sm text-muted-foreground">Logged in as admin</p>
+        <Button variant="outline" size="sm" onClick={handleLogout}>
           Logout
         </Button>
       </div>
