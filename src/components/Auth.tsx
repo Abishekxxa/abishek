@@ -99,14 +99,14 @@ const Auth = ({ onAuthSuccess }: AuthProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-subtle px-6">
+    <div className="flex items-center justify-center px-6">
       <Card className="w-full max-w-md p-8 shadow-elegant">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-2">
-            Trading Journal
+          <h2 className="text-2xl font-bold text-primary mb-2">
+            Admin Login
           </h2>
-          <p className="text-muted-foreground">
-            {isLogin ? "Sign in to your account" : "Create a new account"}
+          <p className="text-sm text-muted-foreground">
+            {isLogin ? "Sign in to access admin panel" : "Create admin account"}
           </p>
         </div>
 
