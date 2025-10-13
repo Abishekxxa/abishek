@@ -3,6 +3,7 @@ import { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import Auth from "@/components/Auth";
 import TradingJournal from "@/components/TradingJournal";
+import Navbar from "@/components/Navbar";
 import { Card } from "@/components/ui/card";
 import {
   Dialog,
@@ -51,15 +52,26 @@ const Journal = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-subtle py-20">
-      <div className="container mx-auto px-6 max-w-6xl">
-        <h1 className="text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-12 text-center">
-          Daily Trading Journal
-        </h1>
+    <div className="min-h-screen bg-gradient-subtle">
+      <Navbar />
+      
+      {/* Header Section */}
+      <header className="bg-gradient-primary py-20">
+        <div className="container mx-auto px-6 max-w-6xl text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+            Daily Trading Journal
+          </h1>
+          <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            Track your trading journey with detailed entries and insights
+          </p>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-6 max-w-6xl py-12">
 
         {/* Public Journal Display */}
-        <div className="mb-20">
-          <h2 className="text-2xl font-bold mb-6 text-primary">Recent Entries</h2>
+        <section className="mb-20">
+          <h2 className="text-3xl font-bold mb-8 text-primary">Recent Entries</h2>
           {loading ? (
             <p className="text-center text-muted-foreground">Loading journals...</p>
           ) : (
@@ -94,17 +106,17 @@ const Journal = () => {
               )}
             </div>
           )}
-        </div>
+        </section>
 
         {/* Admin Section at Bottom */}
-        <div className="border-t pt-12">
-          <h2 className="text-2xl font-bold mb-8 text-center text-primary">Admin Section</h2>
+        <section className="border-t pt-12">
+          <h2 className="text-3xl font-bold mb-8 text-center text-primary">Admin Section</h2>
           {!user ? (
             <Auth onAuthSuccess={(user) => setUser(user)} />
           ) : (
             <TradingJournal user={user} onLogout={() => setUser(null)} />
           )}
-        </div>
+        </section>
       </div>
 
       {/* Journal Detail Modal */}
