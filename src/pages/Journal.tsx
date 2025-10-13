@@ -4,6 +4,14 @@ import { supabase } from "@/integrations/supabase/client";
 import Auth from "@/components/Auth";
 import TradingJournal from "@/components/TradingJournal";
 import { Card } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Journal {
   id: string;
@@ -17,6 +25,7 @@ const Journal = () => {
   const [user, setUser] = useState<User | null>(null);
   const [journals, setJournals] = useState<Journal[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedJournal, setSelectedJournal] = useState<Journal | null>(null);
 
   useEffect(() => {
     fetchJournals();
@@ -55,7 +64,11 @@ const Journal = () => {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {journals.map((journal) => (
-                <Card key={journal.id} className="p-4 shadow-card hover:shadow-elegant transition-all">
+                <Card 
+                  key={journal.id} 
+                  className="p-4 shadow-card hover:shadow-elegant transition-all cursor-pointer"
+                  onClick={() => setSelectedJournal(journal)}
+                >
                   <div className="mb-3">
                     <img
                       src={journal.image_url}
@@ -68,7 +81,7 @@ const Journal = () => {
                       {new Date(journal.journal_date).toLocaleDateString()}
                     </p>
                     {journal.notes && (
-                      <p className="text-sm text-muted-foreground">{journal.notes}</p>
+                      <p className="text-sm text-muted-foreground line-clamp-2">{journal.notes}</p>
                     )}
                   </div>
                 </Card>
@@ -92,6 +105,37 @@ const Journal = () => {
           )}
         </div>
       </div>
+
+      {/* Journal Detail Modal */}
+      <Dialog open={!!selectedJournal} onOpenChange={() => setSelectedJournal(null)}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold">
+              {selectedJournal && new Date(selectedJournal.journal_date).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </DialogTitle>
+          </DialogHeader>
+          {selectedJournal && (
+            <div className="space-y-4">
+              <img
+                src={selectedJournal.image_url}
+                alt={`Journal from ${selectedJournal.journal_date}`}
+                className="w-full rounded-lg"
+              />
+              {selectedJournal.notes && (
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-lg">Notes</h3>
+                  <p className="text-muted-foreground whitespace-pre-wrap">{selectedJournal.notes}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
