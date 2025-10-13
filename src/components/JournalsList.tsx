@@ -110,18 +110,18 @@ const JournalsList = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-primary">Your Trading Journals</h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="space-y-4 sm:space-y-6">
+      <h2 className="text-xl sm:text-2xl font-bold text-primary">Your Trading Journals</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {journals.map((journal) => (
           <Card key={journal.id} className="overflow-hidden shadow-card hover:shadow-elegant transition-all duration-300">
             <img
               src={journal.image_url}
               alt={`Journal from ${journal.journal_date}`}
-              className="w-full h-48 object-cover"
+              className="w-full h-40 sm:h-48 object-cover"
             />
-            <div className="p-4">
-              <p className="font-semibold text-primary mb-2">
+            <div className="p-3 sm:p-4">
+              <p className="text-sm sm:text-base font-semibold text-primary mb-2">
                 {new Date(journal.journal_date).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
