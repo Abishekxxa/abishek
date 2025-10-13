@@ -108,7 +108,7 @@ const Journal = () => {
 
       {/* Journal Detail Modal */}
       <Dialog open={!!selectedJournal} onOpenChange={() => setSelectedJournal(null)}>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold">
               {selectedJournal && new Date(selectedJournal.journal_date).toLocaleDateString('en-US', {
@@ -120,12 +120,14 @@ const Journal = () => {
             </DialogTitle>
           </DialogHeader>
           {selectedJournal && (
-            <div className="space-y-4">
-              <img
-                src={selectedJournal.image_url}
-                alt={`Journal from ${selectedJournal.journal_date}`}
-                className="w-full rounded-lg"
-              />
+            <div className="space-y-6">
+              <div className="w-full">
+                <img
+                  src={selectedJournal.image_url}
+                  alt={`Journal from ${selectedJournal.journal_date}`}
+                  className="w-full h-auto rounded-lg object-contain"
+                />
+              </div>
               {selectedJournal.notes && (
                 <div className="space-y-2">
                   <h3 className="font-semibold text-lg">Notes</h3>
