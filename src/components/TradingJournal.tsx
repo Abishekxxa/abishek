@@ -132,8 +132,8 @@ const TradingJournal = ({ user, onLogout }: TradingJournalProps) => {
 
   if (!isAdmin) {
     return (
-      <div className="text-center py-8 px-4">
-        <p className="text-sm sm:text-base text-muted-foreground mb-4">
+      <div className="text-center py-8">
+        <p className="text-muted-foreground mb-4">
           You don't have admin access to upload journals.
         </p>
         <Button variant="outline" onClick={handleLogout}>
@@ -144,20 +144,20 @@ const TradingJournal = ({ user, onLogout }: TradingJournalProps) => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4 sm:mb-6">
-        <p className="text-xs sm:text-sm text-muted-foreground">Logged in as admin</p>
+    <div className="max-w-2xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <p className="text-sm text-muted-foreground">Logged in as admin</p>
         <Button variant="outline" size="sm" onClick={handleLogout}>
           Logout
         </Button>
       </div>
 
       {/* Upload Form */}
-      <Card className="p-4 sm:p-6 md:p-8 shadow-elegant">
-        <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-primary">Upload New Journal Entry</h3>
-        <div className="space-y-4 sm:space-y-6">
+      <Card className="p-8 shadow-elegant">
+        <h3 className="text-xl font-bold mb-6 text-primary">Upload New Journal Entry</h3>
+        <div className="space-y-6">
           <div>
-            <label className="block text-xs sm:text-sm font-medium mb-2">Date</label>
+            <label className="block text-sm font-medium mb-2">Date</label>
             <Input
               type="date"
               value={journalDate}
@@ -166,7 +166,7 @@ const TradingJournal = ({ user, onLogout }: TradingJournalProps) => {
           </div>
 
           <div>
-            <label className="block text-xs sm:text-sm font-medium mb-2">
+            <label className="block text-sm font-medium mb-2">
               Upload Screenshot/Photo
             </label>
             <Input
@@ -182,7 +182,7 @@ const TradingJournal = ({ user, onLogout }: TradingJournalProps) => {
           </div>
 
           <div>
-            <label className="block text-xs sm:text-sm font-medium mb-2">
+            <label className="block text-sm font-medium mb-2">
               Notes (Optional)
             </label>
             <Textarea
