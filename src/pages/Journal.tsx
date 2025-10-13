@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -108,8 +109,8 @@ const Journal = () => {
 
       {/* Journal Detail Modal */}
       <Dialog open={!!selectedJournal} onOpenChange={() => setSelectedJournal(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
+        <DialogContent className="max-w-5xl p-0 overflow-hidden">
+          <DialogHeader className="p-6 pb-4">
             <DialogTitle className="text-2xl font-bold">
               {selectedJournal && new Date(selectedJournal.journal_date).toLocaleDateString('en-US', {
                 weekday: 'long',
@@ -118,14 +119,20 @@ const Journal = () => {
                 day: 'numeric'
               })}
             </DialogTitle>
+            <DialogDescription className="sr-only">
+              Trading journal entry details
+            </DialogDescription>
           </DialogHeader>
           {selectedJournal && (
-            <div className="space-y-6">
-              <div className="w-full">
+            <div className="px-6 pb-6 space-y-6">
+              <div className="w-full bg-muted rounded-lg overflow-hidden">
                 <img
                   src={selectedJournal.image_url}
                   alt={`Journal from ${selectedJournal.journal_date}`}
-                  className="w-full h-auto rounded-lg object-contain"
+                  className="w-full h-auto max-h-[60vh] object-contain"
+                  onError={(e) => {
+                    console.error('Image failed to load:', selectedJournal.image_url);
+                  }}
                 />
               </div>
               {selectedJournal.notes && (
