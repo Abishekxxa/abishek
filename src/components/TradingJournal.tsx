@@ -114,6 +114,9 @@ const TradingJournal = ({ user, onLogout }: TradingJournalProps) => {
       setSelectedFile(null);
       setNotes("");
       setJournalDate(new Date().toISOString().split("T")[0]);
+      
+      // Reload page to show new entry
+      window.location.reload();
     } catch (error: any) {
       toast({
         title: "Upload Failed",
