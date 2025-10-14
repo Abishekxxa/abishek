@@ -23,11 +23,13 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      isScrolled ? "bg-background/95 backdrop-blur-md shadow-card" : "bg-transparent"
+      isScrolled ? "bg-violet-600 shadow-elegant" : "bg-transparent"
     }`}>
       <div className="container mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-lg sm:text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          <Link to="/" className={`text-lg sm:text-xl font-bold transition-colors ${
+            isScrolled ? "text-white" : "bg-gradient-primary bg-clip-text text-transparent"
+          }`}>
             Abishek S J
           </Link>
           
@@ -35,31 +37,41 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             <button 
               onClick={() => scrollToSection("about")}
-              className="text-foreground hover:text-primary transition-colors text-sm lg:text-base"
+              className={`transition-colors text-sm lg:text-base ${
+                isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
+              }`}
             >
               About
             </button>
             <button 
               onClick={() => scrollToSection("experience")}
-              className="text-foreground hover:text-primary transition-colors text-sm lg:text-base"
+              className={`transition-colors text-sm lg:text-base ${
+                isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
+              }`}
             >
               Experience
             </button>
             <button 
               onClick={() => scrollToSection("projects")}
-              className="text-foreground hover:text-primary transition-colors text-sm lg:text-base"
+              className={`transition-colors text-sm lg:text-base ${
+                isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
+              }`}
             >
               Projects
             </button>
             <Link 
               to="/journal"
-              className="text-foreground hover:text-primary transition-colors text-sm lg:text-base"
+              className={`transition-colors text-sm lg:text-base ${
+                isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
+              }`}
             >
               Journal
             </Link>
             <button 
               onClick={() => scrollToSection("contact")}
-              className="text-foreground hover:text-primary transition-colors text-sm lg:text-base"
+              className={`transition-colors text-sm lg:text-base ${
+                isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
+              }`}
             >
               Contact
             </button>
@@ -75,7 +87,9 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden p-2 text-foreground hover:text-primary transition-colors"
+            className={`md:hidden p-2 transition-colors ${
+              isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
+            }`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle mobile menu"
           >
@@ -88,32 +102,42 @@ const Navbar = () => {
           <div className="md:hidden mt-4 pb-4 space-y-4 animate-fade-in">
             <button 
               onClick={() => scrollToSection("about")}
-              className="block w-full text-left py-2 text-foreground hover:text-primary transition-colors"
+              className={`block w-full text-left py-2 transition-colors ${
+                isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
+              }`}
             >
               About
             </button>
             <button 
               onClick={() => scrollToSection("experience")}
-              className="block w-full text-left py-2 text-foreground hover:text-primary transition-colors"
+              className={`block w-full text-left py-2 transition-colors ${
+                isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
+              }`}
             >
               Experience
             </button>
             <button 
               onClick={() => scrollToSection("projects")}
-              className="block w-full text-left py-2 text-foreground hover:text-primary transition-colors"
+              className={`block w-full text-left py-2 transition-colors ${
+                isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
+              }`}
             >
               Projects
             </button>
             <Link 
               to="/journal"
-              className="block w-full text-left py-2 text-foreground hover:text-primary transition-colors"
+              className={`block w-full text-left py-2 transition-colors ${
+                isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
+              }`}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Journal
             </Link>
             <button 
               onClick={() => scrollToSection("contact")}
-              className="block w-full text-left py-2 text-foreground hover:text-primary transition-colors"
+              className={`block w-full text-left py-2 transition-colors ${
+                isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
+              }`}
             >
               Contact
             </button>
