@@ -12,8 +12,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 interface Journal {
   id: string;
@@ -72,26 +70,26 @@ const Journal = () => {
       <Navbar />
       
       {/* Header Section */}
-      <header className="bg-gradient-primary py-20">
-        <div className="container mx-auto px-6 max-w-6xl text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+      <header className="bg-gradient-primary py-12 sm:py-16 md:py-20">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
             Daily Trading Journal
           </h1>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
             Track your trading journey with detailed entries and insights
           </p>
         </div>
       </header>
 
-      <div className="container mx-auto px-6 max-w-6xl py-12">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl py-8 sm:py-12">
 
         {/* Public Journal Display */}
-        <section className="mb-20">
-          <h2 className="text-3xl font-bold mb-8 text-primary">Recent Entries</h2>
+        <section className="mb-12 sm:mb-20">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-primary">Recent Entries</h2>
           {loading ? (
             <p className="text-center text-muted-foreground">Loading journals...</p>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {journals.map((journal) => (
                 <Card 
                   key={journal.id} 
@@ -106,11 +104,11 @@ const Journal = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <p className="font-semibold text-primary">
+                    <p className="font-semibold text-primary text-sm sm:text-base">
                       {new Date(journal.journal_date).toLocaleDateString()}
                     </p>
                     {journal.notes && (
-                      <p className="text-sm text-muted-foreground line-clamp-2">{journal.notes}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">{journal.notes}</p>
                     )}
                   </div>
                 </Card>
@@ -125,8 +123,8 @@ const Journal = () => {
         </section>
 
         {/* Admin Section at Bottom */}
-        <section className="border-t pt-12">
-          <h2 className="text-3xl font-bold mb-8 text-center text-primary">Admin Section</h2>
+        <section className="border-t pt-8 sm:pt-12">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center text-primary">Admin Section</h2>
           {!user ? (
             <Auth onAuthSuccess={(user) => setUser(user)} />
           ) : (
@@ -137,9 +135,9 @@ const Journal = () => {
 
       {/* Journal Detail Modal */}
       <Dialog open={!!selectedJournal} onOpenChange={() => setSelectedJournal(null)}>
-        <DialogContent className="max-w-5xl p-0 overflow-hidden">
-          <DialogHeader className="p-6 pb-4">
-            <DialogTitle className="text-2xl font-bold">
+        <DialogContent className="max-w-[95vw] sm:max-w-3xl md:max-w-4xl lg:max-w-5xl p-0 overflow-hidden">
+          <DialogHeader className="p-4 sm:p-6 pb-2 sm:pb-4">
+            <DialogTitle className="text-lg sm:text-xl md:text-2xl font-bold">
               {selectedJournal && new Date(selectedJournal.journal_date).toLocaleDateString('en-US', {
                 weekday: 'long',
                 year: 'numeric',
@@ -152,12 +150,12 @@ const Journal = () => {
             </DialogDescription>
           </DialogHeader>
           {selectedJournal && (
-            <div className="px-6 pb-6 space-y-6">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               <div className="w-full bg-muted rounded-lg overflow-hidden">
                 <img
                   src={selectedJournal.image_url}
                   alt={`Journal from ${selectedJournal.journal_date}`}
-                  className="w-full h-auto max-h-[60vh] object-contain"
+                  className="w-full h-auto max-h-[50vh] sm:max-h-[60vh] object-contain"
                   onError={(e) => {
                     console.error('Image failed to load:', selectedJournal.image_url);
                   }}
@@ -165,8 +163,8 @@ const Journal = () => {
               </div>
               {selectedJournal.notes && (
                 <div className="space-y-2">
-                  <h3 className="font-semibold text-lg">Notes</h3>
-                  <p className="text-muted-foreground whitespace-pre-wrap">{selectedJournal.notes}</p>
+                  <h3 className="font-semibold text-base sm:text-lg">Notes</h3>
+                  <p className="text-sm sm:text-base text-muted-foreground whitespace-pre-wrap">{selectedJournal.notes}</p>
                 </div>
               )}
             </div>
