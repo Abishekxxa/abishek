@@ -47,7 +47,23 @@ const Journal = () => {
       .select("*")
       .order("journal_date", { ascending: false });
 
-    setJournals(data || []);
+    if (data) {
+      // Generate signed URLs for images
+      const journalsWithSignedUrls = await Promise.all(
+        data.map(async (journal) => {
+          const { data: signedUrlData } = await supabase.storage
+            .from("trading-journals")
+            .createSignedUrl(journal.image_url.split("/").pop() || "", 3600);
+          
+          return {
+            ...journal,
+            image_url: signedUrlData?.signedUrl || journal.image_url,
+          };
+        })
+      );
+      setJournals(journalsWithSignedUrls);
+    }
+    
     setLoading(false);
   };
 
