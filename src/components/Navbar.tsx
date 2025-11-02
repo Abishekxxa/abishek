@@ -19,7 +19,7 @@ const Navbar = () => {
 
   // Smooth-scroll to anchors when hash changes (e.g., navigating from /journal to /#about)
   useEffect(() => {
-    if (location.pathname === "/" && location.hash) {
+    if (location.hash) {
       const id = location.hash.replace("#", "");
       const el = document.getElementById(id);
       if (el) {
@@ -35,11 +35,20 @@ const Navbar = () => {
   };
 
   const handleNav = (sectionId: string) => {
-    if (location.pathname !== "/") {
-      navigate(`/#${sectionId}`);
-    } else {
+    if (location.pathname === "/" || location.pathname === "/journal") {
       scrollToSection(sectionId);
+    } else {
+      navigate(`/#${sectionId}`);
     }
+  };
+
+  const handleJournalClick = () => {
+    if (location.pathname === "/journal") {
+      scrollToSection("recent-entries");
+    } else {
+      navigate("/journal#recent-entries");
+    }
+    setIsMobileMenuOpen(false);
   };
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -79,14 +88,14 @@ const Navbar = () => {
             >
               Projects
             </button>
-            <Link 
-              to="/journal"
+            <button 
+              onClick={handleJournalClick}
               className={`transition-colors text-sm lg:text-base ${
                 isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
               }`}
             >
               Journal
-            </Link>
+            </button>
             <button 
               onClick={() => handleNav("contact")}
               className={`transition-colors text-sm lg:text-base ${
@@ -144,15 +153,14 @@ const Navbar = () => {
             >
               Projects
             </button>
-            <Link 
-              to="/journal"
+            <button 
+              onClick={handleJournalClick}
               className={`block w-full text-left py-2 transition-colors ${
                 isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
               }`}
-              onClick={() => setIsMobileMenuOpen(false)}
             >
               Journal
-            </Link>
+            </button>
             <button 
               onClick={() => handleNav("contact")}
               className={`block w-full text-left py-2 transition-colors ${

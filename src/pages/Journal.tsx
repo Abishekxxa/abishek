@@ -84,7 +84,7 @@ const Journal = () => {
       <div className="container mx-auto px-4 sm:px-6 max-w-6xl py-8 sm:py-12">
 
         {/* Public Journal Display */}
-        <section className="mb-12 sm:mb-20">
+        <section id="recent-entries" className="mb-12 sm:mb-20">
           <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-primary">Recent Entries</h2>
           {loading ? (
             <p className="text-center text-muted-foreground">Loading journals...</p>
