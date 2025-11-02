@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,12 +17,30 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Smooth-scroll to anchors when hash changes (e.g., navigating from /journal to /#about)
+  useEffect(() => {
+    if (location.pathname === "/" && location.hash) {
+      const id = location.hash.replace("#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 0);
+      }
+    }
+  }, [location]);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     element?.scrollIntoView({ behavior: "smooth" });
     setIsMobileMenuOpen(false);
   };
 
+  const handleNav = (sectionId: string) => {
+    if (location.pathname !== "/") {
+      navigate(`/#${sectionId}`);
+    } else {
+      scrollToSection(sectionId);
+    }
+  };
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
       isScrolled ? "bg-violet-600 shadow-elegant" : "bg-transparent"
@@ -36,7 +56,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             <button 
-              onClick={() => scrollToSection("about")}
+              onClick={() => handleNav("about")}
               className={`transition-colors text-sm lg:text-base ${
                 isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
               }`}
@@ -44,7 +64,7 @@ const Navbar = () => {
               About
             </button>
             <button 
-              onClick={() => scrollToSection("experience")}
+              onClick={() => handleNav("experience")}
               className={`transition-colors text-sm lg:text-base ${
                 isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
               }`}
@@ -52,7 +72,7 @@ const Navbar = () => {
               Experience
             </button>
             <button 
-              onClick={() => scrollToSection("projects")}
+              onClick={() => handleNav("projects")}
               className={`transition-colors text-sm lg:text-base ${
                 isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
               }`}
@@ -68,7 +88,7 @@ const Navbar = () => {
               Journal
             </Link>
             <button 
-              onClick={() => scrollToSection("contact")}
+              onClick={() => handleNav("contact")}
               className={`transition-colors text-sm lg:text-base ${
                 isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
               }`}
@@ -78,7 +98,7 @@ const Navbar = () => {
             <Button 
               variant="hero" 
               size="sm"
-              onClick={() => scrollToSection("contact")}
+              onClick={() => handleNav("contact")}
               className="text-sm"
             >
               Get In Touch
@@ -101,7 +121,7 @@ const Navbar = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-4 animate-fade-in">
             <button 
-              onClick={() => scrollToSection("about")}
+              onClick={() => handleNav("about")}
               className={`block w-full text-left py-2 transition-colors ${
                 isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
               }`}
@@ -109,7 +129,7 @@ const Navbar = () => {
               About
             </button>
             <button 
-              onClick={() => scrollToSection("experience")}
+              onClick={() => handleNav("experience")}
               className={`block w-full text-left py-2 transition-colors ${
                 isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
               }`}
@@ -117,7 +137,7 @@ const Navbar = () => {
               Experience
             </button>
             <button 
-              onClick={() => scrollToSection("projects")}
+              onClick={() => handleNav("projects")}
               className={`block w-full text-left py-2 transition-colors ${
                 isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
               }`}
@@ -134,7 +154,7 @@ const Navbar = () => {
               Journal
             </Link>
             <button 
-              onClick={() => scrollToSection("contact")}
+              onClick={() => handleNav("contact")}
               className={`block w-full text-left py-2 transition-colors ${
                 isScrolled ? "text-white hover:text-violet-200" : "text-foreground hover:text-primary"
               }`}
@@ -144,7 +164,7 @@ const Navbar = () => {
             <Button 
               variant="hero" 
               size="sm"
-              onClick={() => scrollToSection("contact")}
+              onClick={() => handleNav("contact")}
               className="w-full"
             >
               Get In Touch
