@@ -35,10 +35,11 @@ const Navbar = () => {
   };
 
   const handleNav = (sectionId: string) => {
-    if (location.pathname === "/" || location.pathname === "/journal") {
-      scrollToSection(sectionId);
-    } else {
+    if (location.pathname !== "/") {
+      setIsMobileMenuOpen(false);
       navigate(`/#${sectionId}`);
+    } else {
+      scrollToSection(sectionId);
     }
   };
 
